@@ -1,5 +1,5 @@
 <script>
-	window.location = "peserta.php";
+	window.location = "etiket.php";
 </script>
 <?php
 exit();
