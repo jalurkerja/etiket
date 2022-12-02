@@ -10,6 +10,9 @@ if ($__IP == "::1" || $__IP == "127.0.0.1" || $__IP == "localhost") {
 // $apiurl = "http://localhost/chr_dashboards/api/";
 // $apiurl = "https://dashboard.corphr.com/chr_dashboards/api/";
 
+include_once "api/etiket.php";
+$data_etiket       = new Etiket();
+
 function post_etiket_data($data)
 {
 	global $apiurl;

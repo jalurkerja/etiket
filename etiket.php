@@ -52,6 +52,17 @@ if (isset($_POST["simpan"])) {
     }
 }
 
+$etiket_api = "";
+$etiket_api = new Etiket();
+$etiket = "";
+$etiket   = $etiket_api->view_data($_GET['id'], "etiket_api");
+
+if (@$etiket["master_etiket"]["nama"] == "") $etiket["master_etiket"]["nama"] = $_POST["nama"];
+if (@$etiket["master_etiket"]["nik"] == "") $etiket["master_etiket"]["nik"] = $_POST["nik"];
+if (@$etiket["master_etiket"]["no_hp_penumpang"] == "") $etiket["master_etiket"]["no_hp_penumpang"] = $_POST["no_hp_penumpang"];
+if (@$etiket["master_etiket"]["kota_asal"] == "") $etiket["master_etiket"]["kota_asal"] = $_POST["kota_asal"];
+if (@$etiket["master_etiket"]["kota_tujuan"] == "") $etiket["master_etiket"]["kota_tujuan"] = $_POST["kota_tujuan"];
+
 ?>
 <!-- Page Header Start -->
 <div class="page-header">
@@ -74,50 +85,60 @@ if (isset($_POST["simpan"])) {
             <div class="col-lg-9 col-md-12 col-xs-12">
                 <div class="post-job box">
                     <form method="POST" enctype="multipart/form-data" class="form-ad">
-                        <input type="hidden" name="mode" value="etiket">
+                        <?php if ($_GET["id"] == "") { ?>
+                            <input type="hidden" name="mode" value="etiket">
+                        <?php } else { ?>
+                            <input type="hidden" name="mode" value="etiket_update">
+                            <input type="hidden" name="id" value="<?= $_GET["id"]; ?>">
+                        <?php } ?>
+                        <div class="form-group">
+                            <h6>
+                                <font color="red">*Reservasi Tiket dan Hotel tersedia di Hari Senin - Jumat. Jam 09.00 - 16.00 WIB.</font>
+                            </h6>
+                        </div>
                         <div class="form-group">
                             <label class="control-label">Nama Lengkap (Nama Sesuai KTP)</label>
-                            <input type="text" class="form-control" required title="Nama Lengkap" autocomplete="off" required id="nama" name="nama" value="<?= $_POST["nama"]; ?>" onkeypress="return isAlphabetsKey(event)" />
+                            <input type="text" class="form-control" required title="Nama Lengkap" autocomplete="off" required id="nama" name="nama" value="<?= $etiket["master_etiket"]["nama"]; ?>" onkeypress="return isAlphabetsKey(event)" />
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tanggal Lahir</label>
-                            <input type="date" class="form-control" title="Tanggal Lahir" autocomplete="off" required id="tanggal_lahir" name="tanggal_lahir" value="<?= $_POST["tanggal_lahir"]; ?>" />
+                            <input type="date" class="form-control" title="Tanggal Lahir" autocomplete="off" required id="tanggal_lahir" name="tanggal_lahir" value="<?= $etiket["master_etiket"]["tanggal_lahir"]; ?>" />
                         </div>
                         <div class="form-group">
                             <label class="control-label">NIK</label>
-                            <input type="text" class="form-control" title="NIK" required autocomplete="off" name="nik" value="<?= $_POST["nik"]; ?>" maxlength="16" onkeypress="return isNumberKey(event)" />
+                            <input type="text" class="form-control" title="NIK" required autocomplete="off" name="nik" value="<?= $etiket["master_etiket"]["nik"]; ?>" maxlength="16" onkeypress="return isNumberKey(event)" />
                         </div>
                         <div class="form-group">
                             <label class="control-label">Nomor Handphone Penumpang</label>
-                            <input type="text" class="form-control" title="Nomor Handphone Penumpang" required autocomplete="off" name="no_hp_penumpang" value="<?= $_POST["no_hp_penumpang"]; ?>" onkeypress="return isNumberKey(event)" />
+                            <input type="text" class="form-control" title="Nomor Handphone Penumpang" required autocomplete="off" name="no_hp_penumpang" value="<?= $etiket["master_etiket"]["no_hp_penumpang"]; ?>" onkeypress="return isNumberKey(event)" />
                         </div>
                         <div class="form-group">
                             <label class="control-label">Jenis Tiket</label>
                             <div class="search-category-container">
                                 <label class="styled-select">
                                     <select class="dropdown-product selectpicker" title="Jenis Tiket" required name="jenis_tiket" value="<?= $_POST["jenis_tiket"]; ?>">
-                                        <option <?php if ($_POST["jenis_tiket"] == "-") echo "selected"; ?> value="-">-</option>
-                                        <option <?php if ($_POST["jenis_tiket"] == "Tiket Pesawat") echo "selected"; ?> value="Tiket Pesawat">Tiket Pesawat</option>
-                                        <option <?php if ($_POST["jenis_tiket"] == "Tiket KA") echo "selected"; ?> value="Tiket KA">Tiket KA</option>
+                                        <option <?php if ($etiket["master_etiket"]["jenis_tiket"] == "-") echo "selected"; ?> value="-">-</option>
+                                        <option <?php if ($etiket["master_etiket"]["jenis_tiket"] == "Tiket Pesawat") echo "selected"; ?> value="Tiket Pesawat">Tiket Pesawat</option>
+                                        <option <?php if ($etiket["master_etiket"]["jenis_tiket"] == "Tiket KA") echo "selected"; ?> value="Tiket KA">Tiket KA</option>
                                     </select>
                                 </label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tanggal Berangkat</label>
-                            <input type="date" class="form-control" title="Tanggal Berangkat" autocomplete="off" required id="tanggal_berangkat" name="tanggal_berangkat" value="<?= $_POST["tanggal_berangkat"]; ?>" />
+                            <input type="date" class="form-control" title="Tanggal Berangkat" autocomplete="off" required id="tanggal_berangkat" name="tanggal_berangkat" value="<?= $etiket["master_etiket"]["tanggal_berangkat"]; ?>" />
                         </div>
                         <div class=" form-group">
                             <label class="control-label">Perkiraan Jam Keberangkatan</label>
-                            <input type="time" class="form-control" title="Perkiraan Jam Keberangkatan" autocomplete="off" required name="perkiraan_jam_keberangkatan" value="<?= $_POST["perkiraan_jam_keberangkatan"]; ?>" />
+                            <input type="time" class="form-control" title="Perkiraan Jam Keberangkatan" autocomplete="off" required name="perkiraan_jam_keberangkatan" value="<?= $etiket["master_etiket"]["perkiraan_jam_keberangkatan"]; ?>" />
                         </div>
                         <div class=" form-group">
                             <label class="control-label">Kota Asal</label>
-                            <input type="text" class="form-control" title="Kota Asal" autocomplete="off" required name="kota_asal" value="<?= $_POST["kota_asal"]; ?>" />
+                            <input type="text" class="form-control" title="Kota Asal" autocomplete="off" required name="kota_asal" value="<?= $etiket["master_etiket"]["kota_asal"]; ?>" />
                         </div>
                         <div class=" form-group">
                             <label class="control-label">Kota Tujuan</label>
-                            <input type="text" class="form-control" title="Kota Tujuan" autocomplete="off" required name="kota_tujuan" value="<?= $_POST["kota_tujuan"]; ?>" />
+                            <input type="text" class="form-control" title="Kota Tujuan" autocomplete="off" required name="kota_tujuan" value="<?= $etiket["master_etiket"]["kota_tujuan"]; ?>" />
                         </div>
                         <label class="control-label" id="label_candidates_bank_account">Screenshot Lampiran Email Approval <?= $_txt_required; ?>
                             <br><b>&emsp;(Max Size:2MB )</b></label>
